@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Listar Cine</title>
+</head>
+<body>
+	<div align="center">
+		<h1>Cine</h1>
+		<a  th:href="@{/cine/nuevo}">Create Nuevo Cine</a> <br />
+		<br />
+		<table border="1" cellpadding="10">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Cine</th>
+					<th>Distrito</th>
+					<th>telefono</th>
+					<th>Direccion</th>
+					<th>Imagen</th>
+					<th>Estado</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cine : ${listacine}">
+					<td th:text="${cine.idCine}">Id</td>
+					<td th:text="${cine.cine}">Nombre</td>
+					<td th:text="${cine.distrito}">Distrito</td>
+					<td th:text="${cine.telefono}">Telefono</td>
+					<td th:text="${cine.direccion}">Direccion</td>
+					<td th:text="${cine.imagen}">Imagen</td>
+					<td th:text="${cine.estado}">Estado</td>
+					<td><a th:href="@{/cine/actualizar/{id}(id=${cine.idCine})}">Actualizar</a>
+						&nbsp;&nbsp;&nbsp; 
+						<a th:href="@{/cine/eliminar/{id}(id=${cine.idCine})}">Eliminar</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
