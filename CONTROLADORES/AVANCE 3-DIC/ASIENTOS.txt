@@ -1,0 +1,70 @@
+package idat.edu.pe.daa2.controladores.rest;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import idat.edu.pe.daa2.jpa.modelo.Asientos;
+import idat.edu.pe.daa2.jpa.servicios.AsientosServicio;
+
+
+@RestController
+@RequestMapping ("/rest/asientos")
+public class AsientosRestController {
+	
+	@Autowired
+	private AsientosServicio servicio;
+	
+	@GetMapping
+	public ResponseEntity<Object> buscarTodo(){
+		List<Asientos>listaAsientos= servicio.buscarTodo();
+		return new ResponseEntity<>(listaAsientos, HttpStatus.OK);
+	}
+	
+	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<Asientos> registrar(@RequestBody Asientos asientos){
+		System.out.println("entramos al post");
+		Asientos obj = servicio.crear(asientos);
+		return new ResponseEntity<Asientos>(obj, HttpStatus.OK);
+	}
+	
+	@PutMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<Asientos> actualizar(@RequestBody Asientos asientos){
+		Asientos obj = servicio.Actualizar(asientos);
+		return new ResponseEntity<Asientos>(obj, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> eliminar(@PathVariable("id")Integer id) throws Exception{
+		Asientos obj = servicio.buscarPorId(id);
+		if(obj == null) {
+			throw new  Exception("No se encontro el ID");
+		}
+		servicio.borrarPorId(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Asientos> buscarPorId(@PathVariable("id")Integer id) throws Exception{
+		Asientos obj = servicio.buscarPorId(id);
+		if(obj == null) {
+			throw new  Exception("No se encontro el ID");
+		}
+		return new ResponseEntity<Asientos>(obj, HttpStatus.OK);
+	}
+	
+	
+}
