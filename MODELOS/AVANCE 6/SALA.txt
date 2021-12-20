@@ -1,0 +1,126 @@
+@Entity
+@Table(name="sala")
+@XmlRootElement
+@NamedQueries({
+	@NamedQuery(name= "Sala.findAll",query="SELECT s FROM Sala s"),
+	@NamedQuery(name= "Sala.finByIdSala", query="SELECT s FROM Sala s WHERE s.idSala=: idSala"),
+	@NamedQuery(name= "Sala.finBySala", query="SELECT s FROM Sala s WHERE s.sala=: sala"),
+	@NamedQuery(name= "Sala.findByCapacidad", query="SELECT s FROM Sala s WHERE s.capacidad=: capacidad")
+
+})
+
+public class Sala  implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Basic(optional= false)
+	@Column(name="idSala")
+	private Integer idSala;
+	@Basic(optional= false)
+	@Column(name="sala")
+	private String sala;
+	@Basic(optional= false)
+	@Column(name="capacidad")
+	private String capacidad;
+	@OneToMany(cascade= CascadeType.ALL,mappedBy="sala")
+	//(value="asientos_sala")
+	@JsonBackReference
+	private List<Asientos>asientosList;
+	//@JsonIgnore
+	@OneToMany(cascade= CascadeType.ALL,mappedBy ="sala")
+	//@JsonBackReference(value="funciones_salas")
+	@JsonBackReference
+	private List<Funciones> funcionesList;
+	
+	
+public Sala(){
+		
+	}
+	
+	public Sala(Integer idSala) {
+		this.idSala= idSala;
+	}
+	
+	public Sala(Integer idSala,String sala,String capacidad) {
+		this.idSala= idSala;
+		this.sala= sala;
+		this.capacidad= capacidad;
+	}
+
+	public Integer getIdSala() {
+		return idSala;
+	}
+
+	public void setIdSala(Integer idSala) {
+		this.idSala = idSala;
+	}
+
+	public String getSala() {
+		return sala;
+	}
+
+	public void setSala(String sala) {
+		this.sala = sala;
+	}
+
+	public String getCapacidad() {
+		return capacidad;
+	}
+
+	public void setCapacidad(String capacidad) {
+		this.capacidad = capacidad;
+	}
+
+	
+	@XmlTransient
+	public List<Asientos> getAsientosList() {
+		 return asientosList;
+	}
+
+	public void setAsientosList(List<Asientos> asientosList) {
+		this.asientosList = asientosList;
+	}
+	
+	@XmlTransient
+	public List<Funciones> getFuncionesList() {
+		 return funcionesList;
+	}
+
+	public void setFuncionesList(List<Funciones> funcionesList) {
+		this.funcionesList = funcionesList;
+	}
+	
+	
+	@Override
+	public int hashCode() {
+	int hash = 0;
+	hash += (idSala != null ? idSala.hashCode() : 0);
+	return hash;
+	}
+
+
+
+	@Override
+	public boolean equals(Object object) {
+	// TODO: Warning - this method won't work in the case the id fields are not set
+	if (!(object instanceof Sala)) {
+	return false;
+	}
+	Sala other = (Sala) object;
+	if ((this.idSala== null && other.idSala!= null) || (this.idSala!= null && !this.idSala.equals(other.idSala))) {
+	return false;
+	}
+	return true;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "javaapplication1.Sala[ idSala=" + idSala+ " ]";
+	}
+	
+	
+
+}
